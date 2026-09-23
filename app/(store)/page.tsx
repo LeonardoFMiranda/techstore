@@ -97,7 +97,7 @@ export default async function HomePage({
                 style={{ color: "var(--text-secondary)" }}
               >
                 Curadoria dos melhores gadgets, periféricos e equipamentos tech.
-                Compre com segurança via Stripe.
+                
               </p>
               <div className="flex flex-wrap gap-3">
                 <Link href="#products" className="btn btn-primary btn-lg">
