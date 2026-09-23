@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ShoppingCart, Zap, Search, Menu, X } from "lucide-react";
+import { ShoppingCart, Zap, Search, Menu, X, Package } from "lucide-react";
 import { useAuth, UserButton, SignInButton } from "@clerk/nextjs";
 import { useCartStore } from "@/lib/store/cart";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const categories = [
   { label: "Fones", value: "Fones de Ouvido" },
@@ -20,7 +20,12 @@ export function Navbar() {
   const { totalItems, toggleCart } = useCartStore();
   const itemCount = totalItems();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const { isSignedIn, isLoaded } = useAuth();
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   return (
     <nav className="navbar">
@@ -64,22 +69,45 @@ export function Navbar() {
         {/* Right side */}
         <div className="flex items-center gap-2">
           {/* Search (desktop) */}
-          <Link
-            href="/?busca=true"
-            className="btn btn-icon btn-ghost hidden md:flex"
-            title="Buscar"
-          >
-            <Search size={18} />
-          </Link>
+          <form action="/" method="GET" className="hidden md:flex relative items-center">
+            <Search
+              size={16}
+              className="absolute left-2.5 pointer-events-none"
+              style={{ color: "var(--text-muted)" }}
+            />
+            <input
+              type="text"
+              name="busca"
+              placeholder="Buscar..."
+              className="input text-sm rounded-md transition-all duration-300 focus:w-48"
+              style={{ 
+                width: "140px", 
+                height: "36px", 
+                paddingLeft: "32px",
+                backgroundColor: "transparent",
+                borderColor: "transparent"
+              }}
+              onFocus={(e) => {
+                e.target.style.backgroundColor = "var(--bg-elevated)";
+                e.target.style.borderColor = "var(--border)";
+              }}
+              onBlur={(e) => {
+                if (!e.target.value) {
+                  e.target.style.backgroundColor = "transparent";
+                  e.target.style.borderColor = "transparent";
+                }
+              }}
+            />
+          </form>
 
           {/* Cart button */}
           <button
             onClick={toggleCart}
             className="btn btn-icon btn-ghost relative"
-            aria-label={`Carrinho com ${itemCount} itens`}
+            aria-label={`Carrinho com ${isMounted ? itemCount : 0} itens`}
           >
             <ShoppingCart size={20} />
-            {itemCount > 0 && (
+            {isMounted && itemCount > 0 && (
               <span
                 className="absolute -top-1 -right-1 w-5 h-5 rounded-full text-xs font-bold flex items-center justify-center text-black glow-green"
                 style={{ background: "var(--green-accent)", fontSize: "0.65rem" }}
@@ -97,12 +125,22 @@ export function Navbar() {
           )}
           {isLoaded && isSignedIn && (
             <UserButton
+              userProfileMode="navigation"
+              userProfileUrl="/minha-conta/perfil"
               appearance={{
                 elements: {
                   avatarBox: "w-8 h-8",
                 },
               }}
-            />
+            >
+              <UserButton.MenuItems>
+                <UserButton.Link
+                  label="Meus Pedidos"
+                  labelIcon={<Package size={15} />}
+                  href="/minha-conta/pedidos"
+                />
+              </UserButton.MenuItems>
+            </UserButton>
           )}
 
           {/* Mobile menu toggle */}

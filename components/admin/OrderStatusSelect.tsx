@@ -4,6 +4,8 @@ import { useTransition } from "react";
 import { updateOrderStatus } from "@/app/actions/admin";
 
 const STATUS_OPTIONS = [
+  { value: "PENDING", label: "Marcar como Pendente" },
+  { value: "PAID", label: "Marcar como Pago" },
   { value: "SHIPPED", label: "Marcar como Enviado" },
   { value: "CANCELED", label: "Cancelar Pedido" },
 ];
@@ -18,7 +20,7 @@ export function OrderStatusSelect({ orderId, currentStatus }: { orderId: string,
       defaultValue=""
       disabled={isPending}
       onChange={(e) => {
-        const val = e.target.value as "SHIPPED" | "CANCELED";
+        const val = e.target.value as "PENDING" | "PAID" | "SHIPPED" | "CANCELED";
         if (val) {
           startTransition(async () => {
             await updateOrderStatus(orderId, val);

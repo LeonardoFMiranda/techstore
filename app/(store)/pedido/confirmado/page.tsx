@@ -11,6 +11,8 @@ import {
 import { formatPrice, getOrderStatusLabel, getOrderStatusColor } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
+import { stripe } from "@/lib/stripe";
+import { MapPin } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -36,6 +38,12 @@ export default async function OrderConfirmedPage({ searchParams }: Props) {
       },
     },
   });
+
+  const stripeSession = await stripe.checkout.sessions.retrieve(session_id);
+  // @ts-ignore - shipping_details exists on the Stripe session at runtime
+  const address = stripeSession.shipping_details?.address;
+  // @ts-ignore
+  const customerName = stripeSession.shipping_details?.name || stripeSession.customer_details?.name;
 
   if (!order) {
     // Webhook might not have processed yet — show processing state
@@ -173,6 +181,34 @@ export default async function OrderConfirmedPage({ searchParams }: Props) {
             </span>
           </div>
         </div>
+
+        {/* Shipping Address */}
+        {address && (
+          <div
+            className="mt-6 rounded-2xl overflow-hidden p-6"
+            style={{ border: "1px solid var(--border)", background: "var(--bg-card)" }}
+          >
+            <div className="flex items-start gap-4">
+              <div
+                className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+                style={{ background: "rgba(0,230,158,0.15)" }}
+              >
+                <MapPin size={20} style={{ color: "var(--green-accent)" }} />
+              </div>
+              <div>
+                <h3 className="font-bold text-lg mb-2">Endereço de Entrega</h3>
+                <p className="font-medium">{customerName}</p>
+                <p className="text-sm mt-1" style={{ color: "var(--text-secondary)" }}>
+                  {address.line1}
+                  {address.line2 && `, ${address.line2}`}
+                </p>
+                <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
+                  {address.city} - {address.state}, {address.postal_code}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Guest CTA */}
         {!order.userId && (

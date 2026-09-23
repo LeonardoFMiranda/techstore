@@ -100,13 +100,8 @@ export async function deleteProduct(id: string) {
 
 // =========== ORDER ACTIONS ===========
 
-export async function updateOrderStatus(orderId: string, status: "SHIPPED" | "CANCELED") {
+export async function updateOrderStatus(orderId: string, status: "PENDING" | "PAID" | "SHIPPED" | "CANCELED") {
   await requireAdmin();
-
-  // Cannot manually set to PAID (only via webhook)
-  if (status === "PAID" as string) {
-    throw new Error("Status PAID só pode ser definido via webhook do Stripe.");
-  }
 
   const order = await db.order.findUnique({ where: { id: orderId } });
   if (!order) throw new Error("Pedido não encontrado");

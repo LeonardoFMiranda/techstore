@@ -106,7 +106,10 @@ export async function createCheckoutSession(
       orderId: order.id,
     },
     locale: "pt-BR",
-    billing_address_collection: "auto",
+    billing_address_collection: "required",
+    shipping_address_collection: {
+      allowed_countries: ["BR"],
+    },
     customer_email: userEmail, // Will prompt if undefined (guest)
   });
 

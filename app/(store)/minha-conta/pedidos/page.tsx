@@ -28,11 +28,10 @@ export default async function MyOrdersPage() {
   });
 
   return (
-    <div className="container-main" style={{ paddingTop: "3rem", paddingBottom: "5rem" }}>
-      <div className="max-w-3xl mx-auto">
-        <h1 className="text-2xl font-bold mb-8">Meus Pedidos</h1>
+    <div>
+      <h1 className="text-2xl font-bold mb-8">Meus Pedidos</h1>
 
-        {orders.length === 0 ? (
+      {orders.length === 0 ? (
           <div className="empty-state">
             <Package size={56} style={{ color: "var(--text-muted)" }} />
             <h2 className="text-xl font-semibold" style={{ color: "var(--text-secondary)" }}>
@@ -138,7 +137,6 @@ export default async function MyOrdersPage() {
             ))}
           </div>
         )}
-      </div>
     </div>
   );
 }

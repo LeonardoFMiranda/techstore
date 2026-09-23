@@ -71,7 +71,7 @@ export default async function HomePage({
             }}
           />
           <div className="container-main py-20 md:py-28 relative">
-            <div className="max-w-2xl">
+            <div className="max-w-2xl py-4">
               <div
                 className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border mb-6 text-xs font-medium"
                 style={{
@@ -165,8 +165,8 @@ export default async function HomePage({
                 name="busca"
                 defaultValue={params.busca}
                 placeholder="Buscar produtos..."
-                className="input pl-9"
-                style={{ width: "220px", height: "38px" }}
+                className="input"
+                style={{ width: "220px", height: "38px", paddingLeft: "36px" }}
                 id="search-products"
               />
             </form>
@@ -185,8 +185,8 @@ export default async function HomePage({
                 <AutoSubmitSelect
                   name="categoria"
                   defaultValue={params.categoria ?? ""}
-                  className="select pl-8"
-                  style={{ width: "180px", height: "38px" }}
+                  className="select"
+                  style={{ width: "180px", height: "38px", paddingLeft: "32px" }}
                   id="filter-category"
                 >
                   <option value="">Todas categorias</option>

@@ -16,7 +16,7 @@ export default function StoreLayout({
         style={{ borderColor: "var(--border)", background: "var(--bg-secondary)" }}
       >
         <div className="container-main py-10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-5">
             <div>
               <h4 className="font-semibold mb-3 text-sm" style={{ color: "var(--text-primary)" }}>
                 TechStore

@@ -155,9 +155,7 @@ export default async function AdminOrdersPage({
                     </span>
                   </td>
                   <td>
-                    {order.status !== "CANCELED" && order.status !== "PENDING" && (
-                      <OrderStatusSelect orderId={order.id} currentStatus={order.status} />
-                    )}
+                    <OrderStatusSelect orderId={order.id} currentStatus={order.status} />
                   </td>
                 </tr>
               ))}
